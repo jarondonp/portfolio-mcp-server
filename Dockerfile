@@ -1,10 +1,10 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-COPY package*.json ./
-COPY package-lock.json ./
-COPY tsconfig.json ./
-COPY index.ts ./
+COPY servers/src/brave-search/package*.json ./
+COPY servers/src/brave-search/package-lock.json ./
+COPY servers/src/brave-search/tsconfig.json ./
+COPY servers/src/brave-search/index.ts ./
 COPY servers ./servers
 
 WORKDIR /app/servers/src/brave-search
@@ -15,7 +15,7 @@ RUN npm run build
 FROM node:22-alpine AS release
 WORKDIR /app
 COPY --from=builder /app/servers/src/brave-search/dist /app/dist
-COPY package*.json ./
+COPY package*.json ./ # Esto podría necesitar ajuste dependiendo de dónde se espera en la etapa release
 ENV NODE_ENV=production
 RUN npm ci --ignore-scripts --omit=dev
 ENTRYPOINT ["node", "dist/index.js"]
