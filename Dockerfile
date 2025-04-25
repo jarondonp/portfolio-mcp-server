@@ -18,4 +18,4 @@ COPY --from=builder /app/servers/src/brave-search/dist /app/dist
 COPY package*.json ./
 ENV NODE_ENV=production
 RUN npm ci --ignore-scripts --omit=dev
-ENTRYPOINT ["node", "dist/index.js"]
+ENTRYPOINT ["node", "./brave-search/dist/index.js"]
